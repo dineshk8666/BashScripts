@@ -1,0 +1,24 @@
+#/bin/bash
+set -ex
+
+#insall JAVA
+sudo apt-get update
+sudo apt-get install python-software-properties
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java8-installer
+sudo update-alternatives --config java
+echo 'JAVA_HOME="/usr/lib/jvm/java-8-oracle"' >> /etc/environment
+source /etc/environment
+echo $JAVA_HOME
+
+#Install Python Requirements
+sudo apt-get install -y python-pip
+sudo pip install cql PyYAML
+sudo pip install ccm
+
+#Create a 3 node cassandra cluster
+echo "Creating a 3 node Cassandra Cluster"
+ccm create cassandra_dev_cluster -n 3 -v 2.1.6
+ccm list
+ccm start
